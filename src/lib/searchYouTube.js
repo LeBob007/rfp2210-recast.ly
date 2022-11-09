@@ -11,7 +11,8 @@ var searchYouTube = (query, callback) => {
     type: 'GET',
     data: {
       q: query,
-      part: 'snippet'
+      part: 'snippet',
+      maxResults: 5
     },
     videoEmbeddable: 'true',
     success: (data) => {

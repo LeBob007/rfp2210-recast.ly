@@ -3,12 +3,15 @@ import VideoList from './VideoList.js';
 import VideoPlayer from './VideoPlayer.js';
 import Search from './Search.js';
 import searchYouTube from '../lib/searchYouTube.js';
-const { useState } = React;
+//import debounce from '../../node_modules/lodash/debounce.js';
+// import  from '/node_modules/lodash/lodash.js';
+
+const { useState, useEffect, useCallback } = React;
 
 var App = () => {
 
   const [data, setData] = useState([]);
-  const [video, setVideo] = useState({});
+  const [video, setVideo] = useState(null);
 
   const videoClick = (event) => {
     setVideo(event);
@@ -20,13 +23,21 @@ var App = () => {
       setVideo(videos[0]);
     });
   };
-  search('hello');
+
+  const debouncedSearch = useCallback(
+    _.debounce(search, 500), []);
+
+  // search('');
+  useEffect((query) => {
+    var string = query || '';
+    search(string);
+  }, []);
 
   return (
     <div>
       <nav className="navbar">
         <div className="col-md-6 offset-md-3">
-          <div><Search search={search}/></div>
+          <div><Search search={debouncedSearch}/></div>
         </div>
       </nav>
       <div className="row">
